@@ -37,13 +37,13 @@ function Find-Drive-Letter-By-Id {
 
     $array = Get-PSDrive -psprovider FileSystem
 
-    foreach ($A in $array)
+    foreach ($a in $array)
     {
-        if ($A.tostring().trim() -eq 'py') {
+        if ($a.tostring().trim() -eq 'py') {
             continue
         }
 
-        $idFilePath = $A.name + ":" + '\luther-drive-id.txt'
+        $idFilePath = $a.name + ":" + '\luther-drive-id.txt'
         if (Test-Path ($idFilePath)) {
             $driveid = get-content $idFilePath
             if ($driveid -eq $drive_id_to_find) {
