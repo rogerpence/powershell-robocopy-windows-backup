@@ -1,0 +1,1 @@
+./test -dryrun -config_file backup-delray.config

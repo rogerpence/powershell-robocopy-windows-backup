@@ -46,6 +46,11 @@ if ((Is-Elevated) -eq $false)  {
     exit
 }
 
+if (-Not (Test-Path $config_file)) {
+    write-host "Couldn't find $($config_file) file"   -foregroundcolor white -backgroundcolor red
+    exit
+}
+
 mount-vhdxs
 
 if (($noshutdown) -eq $true)  {

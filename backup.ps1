@@ -42,8 +42,9 @@ function Find-Drive-Letter-By-Id {
         if ($A.tostring().trim() -eq 'py') {
             continue
         }
-        $idFilePath = $A.name + ":" + '\rp-drive-id.txt'
-        if (Test-Path ($idFilePath) ) {
+
+        $idFilePath = $A.name + ":" + '\luther-drive-id.txt'
+        if (Test-Path ($idFilePath)) {
             $driveid = get-content $idFilePath
             if ($driveid -eq $drive_id_to_find) {
                 $result = $a.name + ':'
@@ -140,6 +141,10 @@ function Read-Backup-Config {
     if (Test-Path ($config) ) {
         $lines = get-content $config
         return $lines
+    }
+    else {
+        write-host "Couldn't find $($config) file"   -foregroundcolor white -backgroundcolor red
+        exit
     }
 }
 
