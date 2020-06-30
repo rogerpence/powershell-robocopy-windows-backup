@@ -1,6 +1,6 @@
 # Windows backup with RoboCopy and Powershell
 
-This backup scheme is called Luther and it backs up folders from a source device and writes them to a target device. PowerShell drives the Luther and RoboCopy writes the source data to the target device.
+This backup scheme is called Luther and it backs up folders from a source device and writes them to a target device. Luther uses PowerShell and RoboCopy to write source data to the target device.
 
 RoboCopy is very fast and this backup is the fastest backup I've ever used. The initial backup may take some time, but after the first backup, RoboCopy's `/mir` option (which mirrors a directory from its source to its target) makes backups *very* speedy. See the [RoboCopy docs for more information.](https://docs.microsoft.com/en-us/windows-server/.administration/windows-commands/robocopy). Luther also takes advantage of RoboCopy's multi-threading to speed up the backup.
 
