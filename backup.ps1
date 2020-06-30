@@ -2,7 +2,7 @@ param (
     [parameter(position=0)]
     [switch] $dryrun = $false,
     [string] $config_file = 'backup.config',
-    [switch] $noshutdown = $true
+    [switch] $shutdown = $false
 )
 
 class Robo {
@@ -82,25 +82,17 @@ function Backup-Directory {
     }
 
     $source = "$($source_drive)\$($source_directory)"
+    if (-not (test-path $source -PathType Container)) {
+        write-host "Source path not found: $($source)"
+        return
+    }
 
     $target = "$($target_drive)\$($source_device)\$($source_directory)"
 
-    # This is dead code. right?
-    if (Test-Path $source -PathType Leaf ) {
-        write-host Source is a file
-        # $target = split-path -path $target
-        # $target = "$($target)\"
-        # copy-item $source -destination $target
-        write-host("From: $($source)")
-        write-host("From: $($target)")
-        exit
-    }
-    else {
-        write-host "From: $($source)" -backgroundcolor white -foregroundcolor blue
-        write-host "To: $($target)" -backgroundcolor white -foregroundcolor blue
+    write-host "From: $($source)" -backgroundcolor white -foregroundcolor blue
+    write-host "To: $($target)" -backgroundcolor white -foregroundcolor blue
 
-        Launch-Robo $source $target $exclude_folders $exclude_files $robo_args
-    }
+    Launch-Robo $source $target $exclude_folders $exclude_files $robo_args
 }
 
 function Launch-Robo {
@@ -129,7 +121,7 @@ function Launch-Robo {
         write-host $cmd
     }
     else {
-        write-host not a dry run
+        write-host Performing backup -foregroundcolor white -backgroundcolor green
         #write-host $cmd
         $command = [scriptblock]::create($cmd)
         $command.invoke()
@@ -166,8 +158,6 @@ foreach ($line in $lines) {
     }
 }
 
-if (($noshutdown) -eq $true)  {
-    exit
+if (($shutdown) -eq $true)  {
+    stop-computer
 }
-
-stop-computer

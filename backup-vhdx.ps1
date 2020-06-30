@@ -2,7 +2,7 @@ param (
     [parameter(position=0)]
     [switch] $dryrun = $false,
     [string] $config_file = 'backup.config',
-    [switch] $noshutdown = $false
+    [switch] $shutdown = $false
 )
 
 $vhdxs = "C:\Users\thumb\VMs\rp-Win10Git\RP-Win10Git.vhdx"
@@ -23,21 +23,30 @@ function run-backup {
     invoke-expression $command
 }
 
-function mount-vhdxs {
+function perform-backup {
     foreach ($vhdx in $vhdxs) {
-        $attached = get-vhd $vhdx | select -expandproperty attached
-        if (-not ($attached)) {
-            write-host Mounting $vhdx  -foregroundcolor white -backgroundcolor  red
-            Mount-vhd -path $vhdx
-            start-sleep -seconds 5
-            run-backup
-            Dismount-vhd -Path $vhdx
-        }
-        else {
-            write-host Could not attach to $vhdx  -foregroundcolor white -backgroundcolor  red
+        if (-not (test-path $vhdx -PathType leaf)) {
+            write-host "Could not find VHDX file: $($vhdx)"  -backgroundcolor white -foregroundcolor red
+            return
         }
 
-        write-host $vm
+        try {
+            $attached = get-vhd $vhdx | select -expandproperty attached
+            if (-not ($attached)) {
+                write-host Mounting $vhdx  -foregroundcolor white -backgroundcolor  green
+                Mount-vhd -path $vhdx
+                start-sleep -seconds 5
+                run-backup
+                Dismount-vhd -Path $vhdx
+            }
+        }
+        catch  {
+            $ErrorMessage = $_.Exception.Message
+            $FailedItem = $_.Exception.ItemName
+            write-host An error occurred with $vhdx -backgroundcolor white -foregroundcolor red
+            write-host $ErrorMessage
+            write-host $FailedItem
+        }
     }
 }
 
@@ -51,10 +60,9 @@ if (-Not (Test-Path $config_file)) {
     exit
 }
 
-mount-vhdxs
+perform-backup
 
-if (($noshutdown) -eq $true)  {
-    exit
+if (($shutdown) -eq $true)  {
+    stop-computer
 }
 
-stop-computer
