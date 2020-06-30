@@ -2,7 +2,7 @@
 
 This backup scheme is called Luther and it backs up folders from a source device and writes them to a target device. PowerShell drives the Luther and RoboCopy writes the source data to the target device.
 
-RoboCopy is very fast and this backup is the fastest backup I've ever used. The initial backup may take some time, but after the first backup, RoboCopy's `/mir` option (which mirrors a directory from its source to its target) makes backups *very* speedy. See the [RoboCopy docs for more information.](https://docs.microsoft.com/en-us/windows-server/. administration/windows-commands/robocopy). Luther also takes advantage of RoboCopy's multi-threading to speed up the backup.
+RoboCopy is very fast and this backup is the fastest backup I've ever used. The initial backup may take some time, but after the first backup, RoboCopy's `/mir` option (which mirrors a directory from its source to its target) makes backups *very* speedy. See the [RoboCopy docs for more information.](https://docs.microsoft.com/en-us/windows-server/.administration/windows-commands/robocopy). Luther also takes advantage of RoboCopy's multi-threading to speed up the backup.
 
 Another reason Luther is fast is that it uses RoboCopy's ability to exclude directories and files. For example, using as it is currently configured, among the folders excluded are `node_modules` and `.git` folders.
 
@@ -152,7 +152,7 @@ If you don't need to mount VHDX files, the PowerShell terminal does not need to 
 
 The command line arguments for backup are the same as for backup-vhdx.
 
-## Using Luther to backup specified files
+## Using Luther to backup specific files
 
 RoboCopy doesn't work well with single files, it expects its backup sources being directories. There may be times when you want to backup what is essentially a single file. Consider backing up a VHDX file itself (not directories inside it--but the file itself).
 
