@@ -16,7 +16,7 @@ class Robo {
         {
 
         $sb = [System.Text.StringBuilder]::new()
-        [void]$sb.Append('robocopy {source} {target} ')
+        [void]$sb.Append('robocopy "{source}" "{target}" ')
         [void]$sb.Append('/xd {exclude_folders} ')
         [void]$sb.Append('/xf {exclude_files} ')
         [void]$sb.Append('{robo_args} ')
@@ -34,6 +34,8 @@ class Robo {
 
 function Find-Drive-Letter-By-Id {
     param( [string]$drive_id_to_find)
+
+    write-host Finding $drive_id_to_find -foregroundcolor Red
 
     $array = Get-PSDrive -psprovider FileSystem
 
@@ -68,12 +70,13 @@ function Backup-Directory {
 
     $source_drive = Find-Drive-Letter-By-Id $source_device
     if ($source_drive -eq 'not-found') {
-        write-host "$($source_device) not found" -backgroundcolor white -foregroundcolor red
+        write-host $source_drive
+        write-host "Source $($source_device) not found" -backgroundcolor white -foregroundcolor red
         $device_not_found = $true
     }
     $target_drive = Find-Drive-Letter-By-Id $target_device
     if ($target_drive -eq 'not-found') {
-        write-host "$($target_device) not found" -backgroundcolor white -foregroundcolor red
+        write-host "Target $($target_device) not found" -backgroundcolor white -foregroundcolor red
         $device_not_found = $true
     }
 
@@ -149,11 +152,10 @@ $robo_args = '/mt:64 /mir /tee'
 $lines = Read-Backup-Config
 foreach ($line in $lines) {
     if ($line.trim().startswith('#')) {
-
+        write-host COMMENTED OUT $line -foregroundcolor red -backgroundcolor white
     }
     else {
         $cmd = [scriptblock]::create($line)
-        #write-host $cmd
         $cmd.invoke()
     }
 }

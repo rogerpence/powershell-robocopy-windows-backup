@@ -1,0 +1,1 @@
+./backup-vhdx.ps1 -config_file backup.vhdx.config
