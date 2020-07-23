@@ -90,7 +90,7 @@ function Backup-Directory {
         return
     }
 
-    $target = "$($target_drive)\$($source_device)\$($source_directory)"
+    $target = "$($target_drive)\luther-backup\$($source_device)\$($source_directory)"
 
     write-host "From: $($source)" -backgroundcolor white -foregroundcolor blue
     write-host "To: $($target)" -backgroundcolor white -foregroundcolor blue
