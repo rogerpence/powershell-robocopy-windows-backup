@@ -156,6 +156,7 @@ foreach ($line in $lines) {
     }
     else {
         $cmd = [scriptblock]::create($line)
+        # write-host $line
         $cmd.invoke()
     }
 }

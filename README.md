@@ -8,7 +8,7 @@ Another reason Luther is fast is that it uses RoboCopy's ability to exclude dire
 
 Luther backup is mostly unattended and drive-letter insenstive. My backup scheme backs up to an often changing set of Hyper-Vs and externally attached backup devices. _Every_ commercial backup systems I've ever used requires hard-coded source and target drive letters and that pain and hassle has always inhibited reliable backups for me.
 
-For backups that need to mount and unmount VHDXs, you need to initiate Luther from an elevated PowerShell prompt (start the Windows Terminal as adminstrator.) Luther doesnt' need an elevated PowerShell session if VHDXs don't need to be mounted.
+For backups that need to mount and unmount VHDXs, you need to initiate Luther from an elevated PowerShell prompt (start the Windows Terminal as adminstrator.) Luther doesn't need an elevated PowerShell session if VHDXs don't need to be mounted.
 
 To identify drives by name, you to identify each drive with a text file identifier. Once that file in place, this back up system refers to source and target drives not by drive letter, but their assigned name.
 
