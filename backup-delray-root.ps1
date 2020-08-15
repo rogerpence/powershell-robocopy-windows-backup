@@ -24,6 +24,7 @@ function Find-Drive-Letter-By-Id {
     return 'not-found'
 }
 
+# Get all files in the root excluding what's listed and directories (directories are mode = 'd----')
 $files = get-item c:\users\thumb\*.* -exclude *.log,backup*.* | where {$_.mode -ne 'd----'}
 
 $targetDevices = 'seagate-4tb-little', 'seagate-4tb-desktop'
@@ -31,7 +32,6 @@ foreach ($targetDevice in $targetDevices) {
     $drive = Find-Drive-Letter-By-Id $targetDevice
 
     foreach ($file in $files) {
-        # write-host $file
         $targetDirectory = "$($drive)\luther-backup\delray\root"
 
         if (-Not (test-path -path "$($drive)\luther-backup\delray\root")) {
@@ -40,5 +40,9 @@ foreach ($targetDevice in $targetDevices) {
         write-host Copying $file to $targetDirectory
         copy-item $file -destination  $targetDirectory -force
     }
+
+    $date = get-date
+    add-content c:\backup-master.log  "$($date)`tFrom: delray`troot`tTo: $($targetDirectory)"
+
 }
 

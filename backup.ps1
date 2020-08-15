@@ -95,6 +95,9 @@ function Backup-Directory {
     write-host "From: $($source)" -backgroundcolor white -foregroundcolor blue
     write-host "To: $($target)" -backgroundcolor white -foregroundcolor blue
 
+    $date = get-date
+    add-content -path c:\backup-master.log  -value "$($date)`tFrom: $($source)`tTo: $($target)`tWith: $($config_file)"
+
     Launch-Robo $source $target $exclude_folders $exclude_files $robo_args
 }
 
